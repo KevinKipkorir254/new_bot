@@ -11,6 +11,14 @@
   <xacro:property name="height3" value="1" /> <!-- Link 3 -->
   <xacro:property name="axel_offset" value="0.05" /> <!-- Space btw top of beam and the each joint -->
 
+  <link name="world" />
+
+<!-- Define a fixed joint to attach the robot to the ground -->
+  <joint name="fixed_joint" type="fixed">
+    <parent link="world"/> <!-- Attach to the "world" link (ground) -->
+    <child link="base_link"/> <!-- Attach the base link to this joint -->
+    <origin xyz="0 0 0"/> <!-- Optionally specify the relative position -->
+  </joint>
 
   <!-- Base Link -->
   <link name="base_link">
