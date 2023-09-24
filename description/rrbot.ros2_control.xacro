@@ -9,6 +9,10 @@
         <param name="example_param_hw_slowdown">100</param>
       </hardware>
 
+    <hardware>
+      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+    </hardware>
+
       <joint name="joint1">
         <command_interface name="position">
           <param name="min">-1</param>
@@ -24,6 +28,13 @@
         <state_interface name="position"/>
       </joint>
     </ros2_control>
+
+    
+    <gazebo>
+        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+            <parameters>$(find new_bot)/config/rrbot_controllers.yaml</parameters>
+        </plugin>
+    </gazebo>
 
 
 </robot>
