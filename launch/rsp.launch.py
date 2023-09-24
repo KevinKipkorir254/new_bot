@@ -24,6 +24,9 @@ def generate_launch_description():
     # Create a robot_state_publisher node
     params = {'robot_description': robot_description_config.toxml(), 'use_sim_time': use_sim_time}
 
+    rviz_config_file = PathJoinSubstitution(
+        [FindPackageShare("new_bot"), "config", "new_bot.rviz"]
+    )
 
      
     # Get URDF via xacro
@@ -45,7 +48,7 @@ def generate_launch_description():
 
     robot_controllers = PathJoinSubstitution(
         [
-            FindPackageShare("ros2_control_demo_example_1"),
+            FindPackageShare("new_bot"),
             "config",
             "rrbot_controllers.yaml",
         ]
@@ -63,13 +66,28 @@ def generate_launch_description():
     node_robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        output='screen',
-        parameters=[params]
+        output="both",
+        parameters=[robot_description],
     )
 
     # This causes the robot to appear
-    rviz = Node(package='rviz2', executable='rviz2',)
-    jspg = Node(package = 'joint_state_publisher', executable = 'joint_state_publisher')
+    rviz = Node(package='rviz2', executable='rviz2', name="rviz2", output="log", arguments=["-d", rviz_config_file],)
+    jspg = Node(package = 'joint_state_publisher', executable = 'joint_state_publisher',)
+
+
+    joint_state_broadcaster_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+    )
+
+    robot_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["forward_position_controller", "--controller-manager", "/controller_manager"],
+    )
+
+
 
     # Launch!
     return LaunchDescription([
@@ -82,4 +100,6 @@ def generate_launch_description():
         rviz,
         jspg,
         control_node,
+        joint_state_broadcaster_spawner,
+        robot_controller_spawner,
     ])
