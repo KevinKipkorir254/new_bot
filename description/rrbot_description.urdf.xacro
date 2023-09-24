@@ -47,6 +47,10 @@
     </inertial>
   </link>
 
+    <gazebo reference="base_link">
+        <material>Gazebo/Orange</material>
+    </gazebo>
+
   <!-- First Joint -->
   <joint name="joint1" type="continuous">
     <parent link="base_link"/>
@@ -83,6 +87,11 @@
     </inertial>
   </link>
 
+
+    <gazebo reference="link1">
+        <material>Gazebo/White</material>
+    </gazebo>
+
   <!-- Second Link -->
   <joint name="joint2" type="continuous">
     <parent link="link1"/>
@@ -118,6 +127,11 @@
         izz="${mass / 12.0 * (width*width + width*width)}"/>
     </inertial>
   </link>
+
+
+    <gazebo reference="link2">
+        <material>Gazebo/Orange</material>
+    </gazebo>
 
   <joint name="tool_joint" type="fixed">
     <origin xyz="0 0 1" rpy="0 0 0" />
